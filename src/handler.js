@@ -80,11 +80,21 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBooksHandler = () => {
+const getAllBooksHandler = async () => {
+  const bookResponse = [];
+
+  for (let i in books) {
+    bookResponse.push({
+      id: books[i].id,
+      name: books[i].name,
+      publisher: books[i].publisher,
+    });
+  }
+
   const response = {
     status: "success",
     data: {
-      books: books,
+      books: bookResponse,
     },
   };
   return response;
@@ -95,7 +105,7 @@ const getBookByIdHandler = (request, h) => {
 
   const book = books.filter((b) => b.id === bookId)[0];
 
-  if(book !== undefined){
+  if (book !== undefined) {
     const response = h.response({
       status: "success",
       data: {
@@ -108,7 +118,7 @@ const getBookByIdHandler = (request, h) => {
 
   const response = h.response({
     status: "fail",
-    message: "Buku tidak ditemukan"
+    message: "Buku tidak ditemukan",
   });
   response.code(404);
   return response;
