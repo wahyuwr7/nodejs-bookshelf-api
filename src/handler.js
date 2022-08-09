@@ -33,30 +33,6 @@ const addBookHandler = (request, h) => {
     updatedAt,
   };
 
-  console.log(newBook)
-
-  books.push(newBook);
-
-  const isSuccess =
-    books.filter(
-      (book) =>
-        book.id === id &&
-        (book.name != null && book.name != "" && book.name != undefined) &&
-        book.readPage <= book.pageCount
-    ).length > 0;
-
-  if (isSuccess) {
-    const response = h.response({
-      status: "success",
-      message: "Buku berhasil ditambahkan",
-      data: {
-        bookId: id,
-      },
-    });
-    response.code(201);
-    return response;
-  }
-
   if (readPage > pageCount) {
     const response = h.response({
       status: "fail",
@@ -67,12 +43,34 @@ const addBookHandler = (request, h) => {
     return response;
   }
 
-  if (name == null || name == "" || name != undefined) {
+  if (name === null || name === "" || name === undefined) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan buku. Mohon isi nama buku",
     });
     response.code(400);
+    return response;
+  }
+
+  books.push(newBook);
+  const isSuccess = () => {
+    return books.filter(
+      (book) =>
+        book.id === id &&
+        (book.name != null && book.name != "" && book.name != undefined) &&
+        book.readPage <= book.pageCount
+    ).length > 0;
+  }
+
+  if (isSuccess) {
+    const response = h.response({
+      status: "success",
+      message: "Buku berhasil ditambahkan",
+      data: {
+        bookId: id,
+      },
+    });
+    response.code(201);
     return response;
   }
 
@@ -169,20 +167,20 @@ const editBookByIdHandler = (request, h) => {
 
   const index = books.findIndex((b) => b.id === bookId);
 
-  if (name === "") {
-    const response = h.response({
-      status: "fail",
-      message: "Gagal memperbarui buku. Mohon isi nama buku",
-    });
-    response.code(400);
-    return response;
-  }
-
   if (readPage > pageCount) {
     const response = h.response({
       status: "fail",
       message:
         "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount",
+    });
+    response.code(400);
+    return response;
+  }
+
+  if (name === null || name === "" || name === undefined) {
+    const response = h.response({
+      status: "fail",
+      message: "Gagal memperbarui buku. Mohon isi nama buku",
     });
     response.code(400);
     return response;
