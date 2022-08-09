@@ -2,7 +2,7 @@
   "name": "nodejs-bookshelf-api",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/server",
+  "main": "./src/server.js",
   "type": "module",
   "scripts": {
     "start": "nodemon ./src/server.js",

@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import books from "./books";
+import books from "./books.js";
 
 const addBookHandler = (request, h) => {
   const {
@@ -10,7 +10,7 @@ const addBookHandler = (request, h) => {
     publisher,
     pageCount,
     readPage,
-    reading,
+    reading
   } = request.payload;
 
   const id = nanoid(16);
@@ -36,16 +36,19 @@ const addBookHandler = (request, h) => {
   books.push(newBook);
 
   const isSuccess =
-    books.filter((book) => book.id === id).length > 0 &&
-    name != "" &&
-    readPage <= pageCount;
+    books.filter(
+      (book) =>
+        book.id === id &&
+        book.name != "" &&
+        book.readPage <= book.pageCount
+    ).length > 0;
 
   if (isSuccess) {
     const response = h.response({
       status: "success",
       message: "Buku berhasil ditambahkan",
       data: {
-        noteId: id,
+        bookId: id,
       },
     });
     response.code(201);
@@ -70,13 +73,13 @@ const addBookHandler = (request, h) => {
     response.code(400);
     return response;
   }
-  
+
   const response = h.response({
     status: "fail",
-    message: "Catatan gagal ditambahkan",
+    message: "Buku gagal ditambahkan",
   });
   response.code(500);
   return response;
 };
 
-export default { addBookHandler };
+export { addBookHandler };
