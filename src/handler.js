@@ -33,12 +33,16 @@ const addBookHandler = (request, h) => {
     updatedAt,
   };
 
+  console.log(newBook)
+
   books.push(newBook);
 
   const isSuccess =
     books.filter(
       (book) =>
-        book.id === id && book.name != "" && book.readPage <= book.pageCount
+        book.id === id &&
+        (book.name != null && book.name != "" && book.name != undefined) &&
+        book.readPage <= book.pageCount
     ).length > 0;
 
   if (isSuccess) {
@@ -53,20 +57,20 @@ const addBookHandler = (request, h) => {
     return response;
   }
 
-  if (name === "") {
-    const response = h.response({
-      status: "fail",
-      message: "Gagal menambahkan buku. Mohon isi nama buku",
-    });
-    response.code(400);
-    return response;
-  }
-
   if (readPage > pageCount) {
     const response = h.response({
       status: "fail",
       message:
         "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+    });
+    response.code(400);
+    return response;
+  }
+
+  if (name == null || name == "" || name != undefined) {
+    const response = h.response({
+      status: "fail",
+      message: "Gagal menambahkan buku. Mohon isi nama buku",
     });
     response.code(400);
     return response;
@@ -128,12 +132,12 @@ const deleteBookByIdHandler = (request, h) => {
   const { bookId } = request.params;
 
   const index = books.findIndex((b) => b.id === bookId);
- 
+
   if (index !== -1) {
     books.splice(index, 1);
     const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil dihapus',
+      status: "success",
+      message: "Buku berhasil dihapus",
     });
     response.code(200);
     return response;
