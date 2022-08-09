@@ -1,15 +1,15 @@
-import hapi from "@hapi/hapi";
-import routes from "./routes.js";
+import hapi from '@hapi/hapi';
+import routes from './routes.js';
 
 const init = async () => {
-  const server = hapi.Server({
+  const server = hapi.server({
     port: 5000,
-    host: "localhost",
+    host: 'localhost',
     routes: {
-        cors: {
-          origin: ['*'],
-        },
-    }
+      cors: {
+        origin: ['*'],
+      },
+    },
   });
 
   server.route(routes);
