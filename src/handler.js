@@ -82,4 +82,14 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-export { addBookHandler };
+const getAllBooksHandler = () => {
+  const response = {
+    status: "success",
+    data: {
+      books: books
+    }
+  };
+  return response;
+};
+
+export { addBookHandler, getAllBooksHandler };
